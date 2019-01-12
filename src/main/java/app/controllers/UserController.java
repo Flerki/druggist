@@ -20,7 +20,7 @@ public class UserController {
     ObjectMapper mapper = new ObjectMapper();
     @Autowired
     UserService userService;
-
+    @Autowired
     AuthService authService;
 
     @PostMapping(path = "/registration",consumes = MediaType.APPLICATION_JSON_VALUE)

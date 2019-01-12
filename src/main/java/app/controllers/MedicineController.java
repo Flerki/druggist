@@ -3,7 +3,6 @@ package app.controllers;
 
 import app.domain.model.Medecine;
 import app.domain.model.User;
-import app.exceptions.UserDoesNotExistException;
 import app.services.AuthService;
 import app.services.MedecineService;
 import app.services.UserService;
