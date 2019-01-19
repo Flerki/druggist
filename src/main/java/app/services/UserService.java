@@ -3,12 +3,12 @@ package app.services;
 
 import app.domain.model.User;
 
-
+import java.util.List;
 
 public interface UserService {
     void registration(User user);
 
-    void getAll();
+    List<User> getAll();
 
     User findByEmail(String email);
 
