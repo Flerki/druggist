@@ -45,8 +45,9 @@ public class AuthService {
 
         return JWT.create()
                 .withIssuer("auth0")
-                .withSubject(user.getEmail())
+                .withSubject(String.valueOf(user.getId()))
                 .withClaim("login", user.getLogin())
+                .withClaim("email", user.getEmail())
                 .withExpiresAt(expiresAt)
                 .sign(ALGORITHM);
     }
