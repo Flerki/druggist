@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -46,9 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public void getAll() {
-        userService.getAll();
+    public List<User> getAll() {
+       return userService.getAll();
     }
-
-
 }
