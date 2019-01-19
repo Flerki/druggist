@@ -26,16 +26,19 @@ public class UserController {
 
     @PostMapping(path = "/registration",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void registration(@RequestBody User user) {
+        String email = user.getEmail();
 
-        User userc = userService.findByEmail(user.getEmail());
-        if (userc != null) {
-            throw new UserWithSuchEmailExists(user.getEmail());
+        User foundByEmailUser = userService.findByEmail(email);
+        if (foundByEmailUser != null) {
+            throw new UserWithSuchEmailExists(email);
         }
 
-        User user1 = userService.findByLogin(user.getLogin());
-        if (user1 != null) {
-            throw new UserWithSuchLoginExists(user.getLogin());
+        String login = user.getLogin();
+        User foundByLoginUser = userService.findByLogin(login);
+        if (foundByLoginUser != null) {
+            throw new UserWithSuchLoginExists(login);
         }
+
         userService.registration(user);
     }
 
