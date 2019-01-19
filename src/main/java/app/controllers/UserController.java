@@ -5,6 +5,7 @@ import app.exceptions.UserWithSuchEmailExists;
 import app.exceptions.UserWithSuchLoginExists;
 import app.services.AuthService;
 import app.services.UserService;
+import app.web.request.AuthenticateRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,8 @@ public class UserController {
 
     @PostMapping("/login")
     @CrossOrigin
-    public String login(String email, String password) throws JsonProcessingException {
-        String jwt = authService.auth(email, password);
+    public String login(@RequestBody AuthenticateRequest request) throws JsonProcessingException {
+        String jwt = authService.auth(request.getEmail(), request.getPassword());
         Map<String, Object> obj = Collections.singletonMap("jwt", jwt);
         return mapper.writeValueAsString(obj);
     }
