@@ -6,7 +6,7 @@ import app.domain.model.User;
 import java.util.List;
 
 public interface UserService {
-    void registration(User user);
+    void register(User user);
 
     List<User> getAll();
 

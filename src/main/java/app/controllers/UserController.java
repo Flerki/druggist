@@ -39,7 +39,7 @@ public class UserController {
             throw new UserWithSuchLoginExists(login);
         }
 
-        userService.registration(user);
+        userService.register(user);
     }
 
     @PostMapping("/login")
