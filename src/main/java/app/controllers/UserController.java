@@ -25,7 +25,7 @@ public class UserController {
     AuthService authService;
 
     @PostMapping(path = "/registration",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void registration(@RequestBody User user) {
+    public String registration(@RequestBody User user) throws JsonProcessingException {
         String email = user.getEmail();
 
         User foundByEmailUser = userService.findByEmail(email);
@@ -40,6 +40,10 @@ public class UserController {
         }
 
         userService.register(user);
+
+        String jwt = authService.auth(email, user.getPassword());
+        Map<String, Object> obj = Collections.singletonMap("jwt", jwt);
+        return mapper.writeValueAsString(obj);
     }
 
     @PostMapping("/login")
