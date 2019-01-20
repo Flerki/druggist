@@ -56,11 +56,22 @@ public class AuthService {
         String jwt = authorizationHeader.substring(7);
         DecodedJWT decodedJWT = verifier.verify(jwt);
 
-        if (!user.getEmail().equals(decodedJWT.getSubject())) {
+        checkEmail(user, decodedJWT);
+        checkLogin(user, decodedJWT);
+    }
+
+    private void checkEmail(User user, DecodedJWT decodedJWT) {
+        String expectedEmail = user.getEmail();
+        String receivedEmail = decodedJWT.getClaim("email").asString();
+        if (!expectedEmail.equals(receivedEmail)) {
             throw new NotAuthenticatedUserException();
         }
+    }
 
-        if (!user.getLogin().equals(decodedJWT.getClaim("login"))) {
+    private void checkLogin(User user, DecodedJWT decodedJWT) {
+        String expectedLogin = user.getLogin();
+        String receivedLogin = decodedJWT.getClaim("login").asString();
+        if (!expectedLogin.equals(receivedLogin)) {
             throw new NotAuthenticatedUserException();
         }
     }
