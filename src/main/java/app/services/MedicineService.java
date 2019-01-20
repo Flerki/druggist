@@ -1,6 +1,6 @@
 package app.services;
 
-import app.domain.model.Medecine;
+import app.domain.model.Medicine;
 import app.domain.MedicineRepository;
 import app.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,40 +13,40 @@ public class MedicineService {
     @Autowired
     MedicineRepository medicineRepository;
 
-    public void create(Medecine medecine) {
-        if (medicineRepository.findById(medecine.getId()).isPresent()) {
+    public void create(Medicine medicine) {
+        if (medicineRepository.findById(medicine.getId()).isPresent()) {
 
         }
-        medicineRepository.save(medecine);
+        medicineRepository.save(medicine);
     }
 
     public void delete(int id) {
         medicineRepository.deleteById(id);
     }
 
-    public void update(Medecine medecine) {
-        if (medicineRepository.findById(medecine.getId()).isPresent()) {
-            medicineRepository.save(medecine);
+    public void update(Medicine medicine) {
+        if (medicineRepository.findById(medicine.getId()).isPresent()) {
+            medicineRepository.save(medicine);
         }
     }
 
-    public List<Medecine> getAll() {
+    public List<Medicine> getAll() {
         return medicineRepository.findAll();
     }
 
-    public List<Medecine> getExpired() {
+    public List<Medicine> getExpired() {
         return medicineRepository.findExpired();
     }
 
-    public List<Medecine> getActive() {
+    public List<Medicine> getActive() {
         return medicineRepository.findActive();
     }
 
-    public Medecine getById(int id) {
+    public Medicine getById(int id) {
         return medicineRepository.findById(id).get();
     }
 
-    public List<Medecine> findByOwner(User owner) {
+    public List<Medicine> findByOwner(User owner) {
         return medicineRepository.findByOwner(owner);
     }
 }

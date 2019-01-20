@@ -1,7 +1,7 @@
 package app.controllers;
 
 
-import app.domain.model.Medecine;
+import app.domain.model.Medicine;
 import app.domain.model.User;
 import app.services.AuthService;
 import app.services.MedicineService;
@@ -27,15 +27,15 @@ public class MedicineController {
 
     @GetMapping
     @CrossOrigin
-    public List<Medecine> getAll(@PathVariable int userId, @RequestHeader String authorization) {
+    public List<Medicine> getAll(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         return medicineService.findByOwner(user);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Medecine medecine, @PathVariable String userId) {
-        medicineService.create(medecine);
+    public void create(@RequestBody Medicine medicine, @PathVariable String userId) {
+        medicineService.create(medicine);
     }
 
     @DeleteMapping("/{id}")
@@ -46,28 +46,28 @@ public class MedicineController {
     }
 
     @PutMapping("/update/{id}")
-    public void update(@RequestBody Medecine medecine, @PathVariable int userId, @RequestHeader String authorization) {
+    public void update(@RequestBody Medicine medicine, @PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
-        medicineService.update(medecine);
+        medicineService.update(medicine);
     }
 
     @GetMapping("/{id}")
-    public Medecine getById(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization) {
+    public Medicine getById(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         return medicineService.getById(id);
     }
 
     @GetMapping("/expired")
-    public List<Medecine> getExpired(@PathVariable int userId, @RequestHeader String authorization) {
+    public List<Medicine> getExpired(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         return medicineService.getExpired();
     }
 
     @GetMapping("/active")
-    public List<Medecine> getActive(@PathVariable int userId, @RequestHeader String authorization) {
+    public List<Medicine> getActive(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         return medicineService.getActive();

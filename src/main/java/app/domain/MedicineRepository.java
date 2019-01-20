@@ -1,6 +1,6 @@
 package app.domain;
 
-import app.domain.model.Medecine;
+import app.domain.model.Medicine;
 import app.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,18 +10,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MedicineRepository extends JpaRepository<Medecine, Integer> {
-    @Query("select m from Medecine m where m.name = :name")
-    List<Medecine> findByName(@Param("name") String name);
+public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
+    @Query("select m from Medicine m where m.name = :name")
+    List<Medicine> findByName(@Param("name") String name);
 
-    @Query("select m from Medecine m where m.category =:category")
-    List<Medecine> findByCategory(@Param("category") String category);
+    @Query("select m from Medicine m where m.category =:category")
+    List<Medicine> findByCategory(@Param("category") String category);
 
-    @Query("select m from  Medecine m where m.expirationDate > CURRENT_DATE ")
-    List<Medecine> findExpired();
+    @Query("select m from  Medicine m where m.expirationDate > CURRENT_DATE ")
+    List<Medicine> findExpired();
 
-    @Query("select m from  Medecine m where m.expirationDate < CURRENT_DATE ")
-    List<Medecine> findActive();
+    @Query("select m from  Medicine m where m.expirationDate < CURRENT_DATE ")
+    List<Medicine> findActive();
 
-    List<Medecine> findByOwner(User owner);
+    List<Medicine> findByOwner(User owner);
 }
