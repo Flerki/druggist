@@ -3,6 +3,7 @@ package app.controllers;
 
 import app.domain.model.Medicine;
 import app.domain.model.User;
+import app.mapper.MedicineDtoToMedicineMapper;
 import app.mapper.MedicineToMedicineDtoMapper;
 import app.services.AuthService;
 import app.services.MedicineService;
@@ -33,6 +34,9 @@ public class MedicineController {
     @Autowired
     MedicineToMedicineDtoMapper medicineToMedicineDtoMapper;
 
+    @Autowired
+    MedicineDtoToMedicineMapper medicineDtoToMedicineMapper;
+
     @GetMapping
     @CrossOrigin
     public List<MedicineDto> getAll(@PathVariable int userId, @RequestHeader String authorization) {
@@ -45,7 +49,13 @@ public class MedicineController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Medicine medicine, @PathVariable String userId) {
+    public void create(@PathVariable int userId, @RequestHeader String authorization, @RequestBody MedicineDto medicineDto) {
+        User user = userService.findById(userId);
+        authService.checkAuthentication(user, authorization);
+
+        Medicine medicine = medicineDtoToMedicineMapper.map(medicineDto);
+        medicine.setOwner(user);
+
         medicineService.create(medicine);
     }
 
