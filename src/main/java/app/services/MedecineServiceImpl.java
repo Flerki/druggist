@@ -2,6 +2,7 @@ package app.services;
 
 import app.domain.model.Medecine;
 import app.domain.MedicineRepository;
+import app.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,10 @@ public class MedecineServiceImpl implements MedecineService {
     @Override
     public Medecine getById(int id) {
         return medicineRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Medecine> findByOwner(User owner) {
+        return medicineRepository.findByOwner(owner);
     }
 }
