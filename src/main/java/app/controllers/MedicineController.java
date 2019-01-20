@@ -77,10 +77,14 @@ public class MedicineController {
     }
 
     @GetMapping("/{id}")
-    public Medicine getById(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization) {
+    @CrossOrigin
+    public MedicineDto getById(@PathVariable int userId, @PathVariable int id, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
-        return medicineService.getById(id);
+
+        Medicine medicine = medicineService.getById(id);
+
+        return medicineToMedicineDtoMapper.map(medicine);
     }
 
     @GetMapping("/expired")
