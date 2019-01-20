@@ -15,7 +15,7 @@ public class MedicineService {
     MedicineRepository medicineRepository;
 
     @Transactional
-    public void create(Medicine medicine) {
+    public void save(Medicine medicine) {
         if (medicineRepository.findById(medicine.getId()).isPresent()) {
 
         }
