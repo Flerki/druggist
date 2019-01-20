@@ -63,7 +63,8 @@ public class MedicineController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization) {
+    @CrossOrigin
+    public void delete(@PathVariable int userId, @PathVariable int id, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         medicineService.delete(id);
