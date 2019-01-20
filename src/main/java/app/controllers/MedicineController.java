@@ -70,10 +70,15 @@ public class MedicineController {
         medicineService.delete(id);
     }
 
-    @PutMapping("/update/{id}")
-    public void update(@RequestBody Medicine medicine, @PathVariable int userId, @RequestHeader String authorization) {
+    @PutMapping("/{id}")
+    @CrossOrigin
+    public void update(@PathVariable int userId, @RequestBody MedicineDto medicineDto, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
+
+        Medicine medicine = medicineDtoToMedicineMapper.map(medicineDto);
+        medicine.setOwner(user);
+
         medicineService.update(medicine);
     }
 
