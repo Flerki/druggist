@@ -49,14 +49,17 @@ public class MedicineController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@PathVariable int userId, @RequestHeader String authorization, @RequestBody MedicineDto medicineDto) {
+    @CrossOrigin
+    public MedicineDto save(@PathVariable int userId, @RequestHeader String authorization, @RequestBody MedicineDto medicineDto) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
 
         Medicine medicine = medicineDtoToMedicineMapper.map(medicineDto);
         medicine.setOwner(user);
 
-        medicineService.create(medicine);
+        medicineService.save(medicine);
+
+        return medicineToMedicineDtoMapper.map(medicine);
     }
 
     @DeleteMapping("/{id}")
