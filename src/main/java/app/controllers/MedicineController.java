@@ -26,6 +26,7 @@ public class MedicineController {
     UserService userService;
 
     @GetMapping
+    @CrossOrigin
     public List<Medecine> getAll(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
