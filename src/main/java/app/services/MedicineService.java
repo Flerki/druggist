@@ -1,10 +1,11 @@
 package app.services;
 
-import app.domain.model.Medicine;
 import app.domain.MedicineRepository;
+import app.domain.model.Medicine;
 import app.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class MedicineService {
     @Autowired
     MedicineRepository medicineRepository;
 
+    @Transactional
     public void create(Medicine medicine) {
         if (medicineRepository.findById(medicine.getId()).isPresent()) {
 
