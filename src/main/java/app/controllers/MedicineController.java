@@ -3,13 +3,18 @@ package app.controllers;
 
 import app.domain.model.Medicine;
 import app.domain.model.User;
+import app.mapper.MedicineToMedicineDtoMapper;
 import app.services.AuthService;
 import app.services.MedicineService;
 import app.services.UserService;
+import app.web.response.MedicineDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -25,12 +30,18 @@ public class MedicineController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    MedicineToMedicineDtoMapper medicineToMedicineDtoMapper;
+
     @GetMapping
     @CrossOrigin
-    public List<Medicine> getAll(@PathVariable int userId, @RequestHeader String authorization) {
+    public List<MedicineDto> getAll(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
-        return medicineService.findByOwner(user);
+        return medicineService.findByOwner(user)
+                .stream()
+                .map(medicineToMedicineDtoMapper::map)
+                .collect(toList());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
