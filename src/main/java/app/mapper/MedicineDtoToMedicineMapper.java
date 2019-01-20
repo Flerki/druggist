@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class MedicineDtoToMedicineMapper {
     public Medicine map(MedicineDto dto) {
         Medicine medicine = new Medicine();
+        medicine.setId(dto.getId());
         medicine.setName(dto.getName());
         return medicine;
     }
