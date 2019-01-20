@@ -1,6 +1,7 @@
 package app.domain;
 
 import app.domain.model.Medecine;
+import app.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,5 @@ public interface MedicineRepository extends JpaRepository<Medecine, Integer> {
     @Query("select m from  Medecine m where m.expirationDate < CURRENT_DATE ")
     List<Medecine> findActive();
 
+    List<Medecine> findByOwner(User owner);
 }
