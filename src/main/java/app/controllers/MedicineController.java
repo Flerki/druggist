@@ -4,7 +4,7 @@ package app.controllers;
 import app.domain.model.Medecine;
 import app.domain.model.User;
 import app.services.AuthService;
-import app.services.MedecineService;
+import app.services.MedicineService;
 import app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ import java.util.List;
 public class MedicineController {
 
     @Autowired
-    MedecineService medicineService;
+    MedicineService medicineService;
 
     @Autowired
     AuthService authService;
