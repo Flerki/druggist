@@ -21,8 +21,16 @@ public class MedicineController {
 
     @Autowired
     AuthService authService;
+
     @Autowired
     UserService userService;
+
+    @GetMapping
+    public List<Medecine> getAll(@PathVariable int userId, @RequestHeader String authorization) {
+        User user = userService.findById(userId);
+        authService.checkAuthentication(user, authorization);
+        return medicineService.findByOwner(user);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody Medecine medecine, @PathVariable String userId) {
@@ -48,13 +56,6 @@ public class MedicineController {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         return medicineService.getById(id);
-    }
-
-    @GetMapping("/allmeds")
-    public List<Medecine> getAll(@PathVariable int userId, @RequestHeader String authorization) {
-        User user = userService.findById(userId);
-        authService.checkAuthentication(user, authorization);
-        return medicineService.getAll();
     }
 
     @GetMapping("/expired")
