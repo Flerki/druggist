@@ -40,6 +40,19 @@ after decoding:
 }
 ```
 
+#### medicine
+format
+```
+{
+	"id" : number,
+	"name" : string,
+	"expirationDate": string, //dd.mm.yyyy
+	"description" : string,
+	"categories" : array of categories
+}
+```
+
+
 #### category
 format:
 ```
@@ -161,6 +174,70 @@ in case of wrong password:
 }
 ```
 
+#### Medicine
+
+##### Retrieval
+
+path: /user/{userId}/medicine
+
+method: GET
+
+response format - array of **medicine type**
+
+##### Creation
+
+path: /user/{userId}/medicine
+
+method: POST
+
+request format:
+
+```
+{
+	"name" : string,
+	"expirationDate": string, //dd.mm.yyyy
+	"description" : string (optional) ,
+	"categories" : array of categories (optional)
+}
+```
+
+response format:
+
+success:
+
+```
+{
+	"id" : number // id of the created medicine
+}
+```
+
+##### Update
+
+path: /user/{userId}/medicine/{medicineId}
+
+method: PUT
+
+request format:
+
+```
+{
+	"name" : string,
+	"expirationDate": string, //dd.mm.yyyy
+	"description" : string (optional) ,
+	"categories" : array of categories (optional)
+}
+```
+
+response format 200 for success and 400 for error
+
+##### Removal
+
+path: /user/{userId}/medicine/{medicineId}
+
+method: DELETE
+
+response format 200 for success and 400 for error
+
 #### Category 
 
 ##### Retrieval
@@ -185,7 +262,14 @@ request format:
 }
 ```
 
-response format -  **category type**
+response format:
+
+```
+{
+	"id" : number // id of the created category
+}
+```
+
 
 ##### Removal
 
