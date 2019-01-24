@@ -4,6 +4,18 @@
 
 for any error HTTP status is 400.
 
+### Authorization
+
+If endpoint requires authorization, then an ```Authorization``` has to be passed. 
+
+Its value has to be in the following format: ```Bearer jwt```. 
+
+Example,
+```Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiYXV0aDAiLCJsb2dpbiI6ImxvZ2luIiwiZXhwIjoxNTQ4MzYzNzM3LCJlbWFpbCI6ImVtYWlsIn0.NNwYYf4aV2cf10cYD890JeMBafJnz4QZs65BuZXC5Q0```
+
+All endpoints, except ```/register``` and ```/auth```, require authorization.
+
+
 ### Types
 #### error 
 format :
@@ -27,6 +39,16 @@ after decoding:
 	"exp": number //time in secs, multiply by 1000 to get ms
 }
 ```
+
+#### category
+format:
+```
+{
+	"id" : number,
+	"name" : string
+}
+```
+
 
 ### Endpoints
 
@@ -134,7 +156,41 @@ in case of wrong password:
 
 ```
 {
-	"code" : "AUTH1",
+	"code" : "AUTH2",
 	"message" : "Wrong password"
 }
 ```
+
+#### Category 
+
+##### Retrieval
+
+path: /user/{userId}/category
+
+method: GET
+
+response format - array of **category type**
+
+##### Creation
+
+path: /user/{userId}/category
+
+method: POST
+
+request format:
+
+```
+{
+	"name" : string
+}
+```
+
+response format -  **category type**
+
+##### Removal
+
+path: /user/{userId}/category/{categoryId}
+
+method: DELETE
+
+response format 200 for success and 400 for error
