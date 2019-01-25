@@ -10,7 +10,7 @@ public class Medicine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
-    private Date expirationDate;
+    private String expirationDate;
     private String description;
     private String category;
 
@@ -38,7 +38,7 @@ public class Medicine {
     }
 
 
-    public Date getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 
@@ -60,7 +60,7 @@ public class Medicine {
         this.name = name;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
 

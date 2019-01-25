@@ -8,6 +8,7 @@ import app.mapper.MedicineToMedicineDtoMapper;
 import app.services.AuthService;
 import app.services.MedicineService;
 import app.services.UserService;
+import app.web.response.IdDto;
 import app.web.response.MedicineDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -50,7 +51,7 @@ public class MedicineController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public MedicineDto save(@PathVariable int userId, @RequestHeader String authorization, @RequestBody MedicineDto medicineDto) {
+    public IdDto save(@PathVariable int userId, @RequestHeader String authorization, @RequestBody MedicineDto medicineDto) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
 
@@ -59,7 +60,7 @@ public class MedicineController {
 
         medicineService.save(medicine);
 
-        return medicineToMedicineDtoMapper.map(medicine);
+        return new IdDto(medicine.getId());
     }
 
     @DeleteMapping("/{id}")

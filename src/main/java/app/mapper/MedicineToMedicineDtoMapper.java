@@ -21,6 +21,8 @@ public class MedicineToMedicineDtoMapper {
         MedicineDto dto = new MedicineDto();
         dto.setId(medicine.getId());
         dto.setName(medicine.getName());
+        dto.setDescription(medicine.getDescription());
+        dto.setExpirationDate(medicine.getExpirationDate());
         return dto;
     }
 }
