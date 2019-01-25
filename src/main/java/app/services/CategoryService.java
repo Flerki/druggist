@@ -2,6 +2,7 @@ package app.services;
 
 import app.domain.CategoryRepository;
 import app.domain.model.Category;
+import app.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class CategoryService {
 
     public List<Category> getAll() {
         return categoryRepository.findAll();
+    }
+
+    public List<Category> findByUser(User user){
+        return categoryRepository.findByOwner(user);
     }
 
     public void createCategory(Category category) {
