@@ -5,6 +5,7 @@ import app.exceptions.UserWithSuchEmailExists;
 import app.exceptions.UserWithSuchLoginExists;
 import app.services.AuthService;
 import app.services.UserService;
+import app.web.request.AuthenticateRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +26,32 @@ public class UserController {
     AuthService authService;
 
     @PostMapping(path = "/registration",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void registration(@RequestBody User user) {
+    @CrossOrigin
+    public String registration(@RequestBody User user) throws JsonProcessingException {
+        String email = user.getEmail();
 
-        User userc = userService.findByEmail(user.getEmail());
-        if (userc != null) {
-            throw new UserWithSuchEmailExists(user.getEmail());
+        User foundByEmailUser = userService.findByEmail(email);
+        if (foundByEmailUser != null) {
+            throw new UserWithSuchEmailExists(email);
         }
 
-        User user1 = userService.findByLogin(user.getLogin());
-        if (user1 != null) {
-            throw new UserWithSuchLoginExists(user.getLogin());
+        String login = user.getLogin();
+        User foundByLoginUser = userService.findByLogin(login);
+        if (foundByLoginUser != null) {
+            throw new UserWithSuchLoginExists(login);
         }
-        userService.registration(user);
+
+        userService.register(user);
+
+        String jwt = authService.auth(email, user.getPassword());
+        Map<String, Object> obj = Collections.singletonMap("jwt", jwt);
+        return mapper.writeValueAsString(obj);
     }
 
     @PostMapping("/login")
-    public String login(String email, String password) throws JsonProcessingException {
-        String jwt = authService.auth(email, password);
+    @CrossOrigin
+    public String login(@RequestBody AuthenticateRequest request) throws JsonProcessingException {
+        String jwt = authService.auth(request.getEmail(), request.getPassword());
         Map<String, Object> obj = Collections.singletonMap("jwt", jwt);
         return mapper.writeValueAsString(obj);
     }
