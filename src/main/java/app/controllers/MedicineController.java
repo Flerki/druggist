@@ -96,6 +96,10 @@ public class MedicineController {
     public void delete(@PathVariable int userId, @PathVariable int id, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
+
+        medicineCategoryRepository.findByMedicineId(id)
+                .forEach(medicineCategoryRepository::delete);
+
         medicineService.delete(id);
     }
 
