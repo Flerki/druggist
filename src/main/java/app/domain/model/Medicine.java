@@ -1,14 +1,11 @@
 package app.domain.model;
 
-
-
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "medecine", schema = "public")
-public class Medecine {
+public class Medicine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -16,16 +13,9 @@ public class Medecine {
     private Date expirationDate;
     private String description;
     private String category;
-    private int ownerId;
 
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
 
     public String getDescription() {
         return description;
@@ -35,23 +25,13 @@ public class Medecine {
         this.description = description;
     }
 
-
-    public Medecine(int id, String name, Date expirationDate, String
-            category) {
-        this.id = id;
-        this.name = name;
-        this.expirationDate = expirationDate;
-        this.category = category;
-    }
-
-    public Medecine() {
-    }
-
-
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -68,4 +48,23 @@ public class Medecine {
     }
 
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

@@ -1,18 +1,38 @@
 package app.services;
 
 
+import app.domain.UserRepository;
 import app.domain.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface UserService {
-    void register(User user);
 
-    List<User> getAll();
+@Service
+public class UserService {
 
-    User findByEmail(String email);
+    @Autowired
+    private UserRepository userRepository;
 
-    User findByLogin(String login);
+    public void register(User user) {
+        userRepository.save(user);
+    }
 
-    User findById(int userId);
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public User findByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    public User findById(int userId) {
+        return userRepository.findById(userId).get();
+    }
+
 }

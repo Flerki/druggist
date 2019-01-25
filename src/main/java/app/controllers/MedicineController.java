@@ -1,15 +1,21 @@
 package app.controllers;
 
 
-import app.domain.model.Medecine;
+import app.domain.model.Medicine;
 import app.domain.model.User;
+import app.mapper.MedicineDtoToMedicineMapper;
+import app.mapper.MedicineToMedicineDtoMapper;
 import app.services.AuthService;
-import app.services.MedecineService;
+import app.services.MedicineService;
 import app.services.UserService;
+import app.web.response.MedicineDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -17,55 +23,85 @@ import java.util.List;
 public class MedicineController {
 
     @Autowired
-    MedecineService medicineService;
+    MedicineService medicineService;
 
     @Autowired
     AuthService authService;
+
     @Autowired
     UserService userService;
 
+    @Autowired
+    MedicineToMedicineDtoMapper medicineToMedicineDtoMapper;
+
+    @Autowired
+    MedicineDtoToMedicineMapper medicineDtoToMedicineMapper;
+
+    @GetMapping
+    @CrossOrigin
+    public List<MedicineDto> getAll(@PathVariable int userId, @RequestHeader String authorization) {
+        User user = userService.findById(userId);
+        authService.checkAuthentication(user, authorization);
+        return medicineService.findByOwner(user)
+                .stream()
+                .map(medicineToMedicineDtoMapper::map)
+                .collect(toList());
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Medecine medecine, @PathVariable String userId) {
-        medicineService.create(medecine);
+    @CrossOrigin
+    public MedicineDto save(@PathVariable int userId, @RequestHeader String authorization, @RequestBody MedicineDto medicineDto) {
+        User user = userService.findById(userId);
+        authService.checkAuthentication(user, authorization);
+
+        Medicine medicine = medicineDtoToMedicineMapper.map(medicineDto);
+        medicine.setOwner(user);
+
+        medicineService.save(medicine);
+
+        return medicineToMedicineDtoMapper.map(medicine);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization) {
+    @CrossOrigin
+    public void delete(@PathVariable int userId, @PathVariable int id, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         medicineService.delete(id);
     }
 
-    @PutMapping("/update/{id}")
-    public void update(@RequestBody Medecine medecine, @PathVariable int userId, @RequestHeader String authorization) {
+    @PutMapping("/{id}")
+    @CrossOrigin
+    public void update(@PathVariable int userId, @RequestBody MedicineDto medicineDto, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
-        medicineService.update(medecine);
+
+        Medicine medicine = medicineDtoToMedicineMapper.map(medicineDto);
+        medicine.setOwner(user);
+
+        medicineService.update(medicine);
     }
 
     @GetMapping("/{id}")
-    public Medecine getById(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization) {
+    @CrossOrigin
+    public MedicineDto getById(@PathVariable int userId, @PathVariable int id, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
-        return medicineService.getById(id);
-    }
 
-    @GetMapping("/allmeds")
-    public List<Medecine> getAll(@PathVariable int userId, @RequestHeader String authorization) {
-        User user = userService.findById(userId);
-        authService.checkAuthentication(user, authorization);
-        return medicineService.getAll();
+        Medicine medicine = medicineService.getById(id);
+
+        return medicineToMedicineDtoMapper.map(medicine);
     }
 
     @GetMapping("/expired")
-    public List<Medecine> getExpired(@PathVariable int userId, @RequestHeader String authorization) {
+    public List<Medicine> getExpired(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         return medicineService.getExpired();
     }
 
     @GetMapping("/active")
-    public List<Medecine> getActive(@PathVariable int userId, @RequestHeader String authorization) {
+    public List<Medicine> getActive(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
         return medicineService.getActive();
