@@ -37,7 +37,8 @@ public class CategoryController {
         authService.checkAuthentication(user, authorization);
         categoryService.updateCategory(category);
     }
-    @GetMapping("/allmeds")
+    @GetMapping
+    @CrossOrigin
     public List<Category> getAll(@PathVariable int userId, @RequestHeader String authorization) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
