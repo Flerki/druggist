@@ -258,7 +258,8 @@ request format:
 
 ```
 {
-	"name" : string
+	"name" : string,
+	"description" : string (optional)
 }
 ```
 

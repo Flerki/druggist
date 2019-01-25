@@ -10,6 +10,7 @@ public class CategoryToCategoryDto {
         CategoryDto dto = new CategoryDto();
         dto.setId(category.getId());
         dto.setName(category.getName());
+        dto.setDescription(category.getDescription());
         return dto;
     }
 }

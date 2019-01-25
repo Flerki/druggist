@@ -23,7 +23,7 @@ public class TestDataConfiguration {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         User user = new User();
         user.setEmail("email");
         user.setLogin("login");
@@ -37,6 +37,7 @@ public class TestDataConfiguration {
             Category category = new Category();
             category.setName("category_" + i);
             category.setOwner(user);
+            category.setDescription(i % 2 == 0 ? null : ("desc_" + i));
             categoryRepository.save(category);
         }
     }

@@ -25,8 +25,8 @@ public class CategoryService {
         return categoryRepository.findByOwner(user);
     }
 
-    public void createCategory(Category category) {
-        categoryRepository.save(category);
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     public void deleteCategory(int id) {

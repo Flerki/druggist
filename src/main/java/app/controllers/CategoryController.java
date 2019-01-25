@@ -2,11 +2,13 @@ package app.controllers;
 
 import app.domain.model.Category;
 import app.domain.model.User;
+import app.mapper.CategoryDtoToCategoryMapper;
 import app.mapper.CategoryToCategoryDto;
 import app.services.AuthService;
 import app.services.CategoryService;
 import app.services.UserService;
 import app.web.response.CategoryDto;
+import app.web.response.IdDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +31,20 @@ public class CategoryController {
     @Autowired
     CategoryToCategoryDto categoryToCategoryDto;
 
+    @Autowired
+    CategoryDtoToCategoryMapper categoryDtoToCategoryMapper;
+
     @PostMapping
-    public void create(@RequestBody Category category, @PathVariable String userId){
-        categoryService.createCategory(category);
+    @CrossOrigin
+    public IdDto create(@PathVariable int userId, @RequestHeader String authorization, @RequestBody CategoryDto categoryDto){
+        User user = userService.findById(userId);
+        authService.checkAuthentication(user, authorization);
+        Category category = categoryDtoToCategoryMapper.map(categoryDto);
+
+        category.setOwner(user);
+        Category saved = categoryService.createCategory(category);
+
+        return new IdDto(saved.getId());
     }
 
     @DeleteMapping("/{id}")
@@ -45,7 +58,6 @@ public class CategoryController {
         authService.checkAuthentication(user, authorization);
         categoryService.updateCategory(category);
     }
-
 
 
     @GetMapping
