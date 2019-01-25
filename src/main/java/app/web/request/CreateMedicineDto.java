@@ -1,14 +1,17 @@
-package app.web.response;
+package app.web.request;
+
+import app.web.response.CategoryDto;
 
 import java.util.List;
 
-public class MedicineDto {
+public class CreateMedicineDto {
+
     private int id;
     private String name;
     private String description;
     private String expirationDate;
 
-    private List<CategoryDto> categories;
+    private List<Integer> categories;
 
     public int getId() {
         return id;
@@ -42,11 +45,11 @@ public class MedicineDto {
         this.expirationDate = expirationDate;
     }
 
-    public List<CategoryDto> getCategories() {
+    public List<Integer> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<CategoryDto> categories) {
+    public void setCategories(List<Integer> categories) {
         this.categories = categories;
     }
 }

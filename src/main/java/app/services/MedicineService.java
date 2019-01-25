@@ -26,10 +26,8 @@ public class MedicineService {
         medicineRepository.deleteById(id);
     }
 
-    public void update(Medicine medicine) {
-        if (medicineRepository.findById(medicine.getId()).isPresent()) {
-            medicineRepository.save(medicine);
-        }
+    public Medicine update(Medicine medicine) {
+            return medicineRepository.save(medicine);
     }
 
     public List<Medicine> getAll() {

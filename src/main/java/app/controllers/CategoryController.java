@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.domain.MedicineCategoryRepository;
 import app.domain.model.Category;
 import app.domain.model.User;
 import app.mapper.CategoryDtoToCategoryMapper;
@@ -34,6 +35,10 @@ public class CategoryController {
     @Autowired
     CategoryDtoToCategoryMapper categoryDtoToCategoryMapper;
 
+
+    @Autowired
+    MedicineCategoryRepository medicineCategoryRepository;
+
     @PostMapping
     @CrossOrigin
     public IdDto create(@PathVariable int userId, @RequestHeader String authorization, @RequestBody CategoryDto categoryDto){
@@ -62,6 +67,9 @@ public class CategoryController {
     public void delete(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization){
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
+
+        medicineCategoryRepository.findByCategoryId(id)
+                .forEach(medicineCategoryRepository::delete);
 
         categoryService.deleteCategory(id);
     }
