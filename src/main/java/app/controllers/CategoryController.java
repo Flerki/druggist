@@ -47,15 +47,35 @@ public class CategoryController {
         return new IdDto(saved.getId());
     }
 
+    @GetMapping("/{categoryId}")
+    @CrossOrigin
+    public CategoryDto get(@PathVariable int userId, @PathVariable int categoryId , @RequestHeader String authorization){
+        User user = userService.findById(userId);
+        authService.checkAuthentication(user, authorization);
+
+        Category category = categoryService.findById(categoryId);
+        return categoryToCategoryDto.map(category);
+    }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id, @PathVariable int userId, @RequestHeader String auhorization){
+    @CrossOrigin
+    public void delete(@PathVariable int id, @PathVariable int userId, @RequestHeader String authorization){
+        User user = userService.findById(userId);
+        authService.checkAuthentication(user, authorization);
+
         categoryService.deleteCategory(id);
     }
 
-    @PutMapping("/update/{id}")
-    public void update(@RequestBody Category category, @PathVariable int userId, @RequestHeader String authorization) {
+    @PutMapping("/{categoryId}")
+    @CrossOrigin
+    public void update(@PathVariable int userId, @PathVariable int categoryId , @RequestHeader String authorization, @RequestBody CategoryDto dto) {
         User user = userService.findById(userId);
         authService.checkAuthentication(user, authorization);
+
+        Category category = categoryDtoToCategoryMapper.map(dto);
+        category.setOwner(user);
+        category.setId(categoryId);
+
         categoryService.updateCategory(category);
     }
 

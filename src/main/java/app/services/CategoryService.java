@@ -25,6 +25,10 @@ public class CategoryService {
         return categoryRepository.findByOwner(user);
     }
 
+    public Category findById(int id){
+        return categoryRepository.getOne(id);
+    }
+
     public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }
@@ -35,7 +39,7 @@ public class CategoryService {
 
     public void updateCategory(Category category) {
         if (categoryRepository.existsById(category.getId())) {
-            categoryRepository.save(category);//????
+            categoryRepository.save(category);
         }
     }
 }
