@@ -271,6 +271,30 @@ response format:
 }
 ```
 
+##### Get by id
+
+path: /user/{userId}/category/{categoryId}
+
+method: GET
+
+response format - **category type**
+
+##### Update
+
+path: /user/{userId}/category/{categoryId}
+
+method: PUT
+
+request format:
+
+```
+{
+	"name" : string,
+	"description" : string (optional)
+}
+```
+
+response format 200 for success and 400 for error
 
 ##### Removal
 
